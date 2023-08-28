@@ -1,0 +1,27 @@
+﻿@page "/blog"
+@using BlogovaciWeb.Code
+@model BlogovaciWeb.Pages.BlogListModel
+@{
+    ViewData["Title"] = "Blog";
+}
+
+<div class="list-group">
+    @foreach (var item in Model.BlogItems)
+    {
+        <a href="/blog/@item.Id" class="list-group-item list-group-item-action position-relative">
+            <h2>@item.Nadpis</h2>
+            <p>Napsal: @(item.Autor?.NickName ?? "?") (@item.Datum.ToString("dd.MM.yyyy"))</p>
+            <p>@item.Perex</p>
+            @if (item.Pripnuto)
+            {
+                <span class="position-absolute top-0 end-0 m-3"><img src="~/img/pin-icon.svg" style="height: 1.5rem; width: 1.5rem;" /></span>
+            }
+        </a>
+    }
+    
+</div>
+
+@if (Model.User.Identity.IsAuthenticated && Model.User.IsInRole(Seed.EditorRoleName))
+{
+    <a href="/editor/blog/0" class="btn btn-outline-primary mt-5">Přidat</a>
+}
